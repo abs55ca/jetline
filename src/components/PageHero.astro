@@ -1,0 +1,74 @@
+---
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+
+interface Props {
+  headline: string;
+  lede?: string;
+  image: ImageMetadata;
+  alt: string;
+  /** CSS object-position for the art-directed crop. */
+  focus?: string;
+  /** Fixed-width rail fields. Each must carry a verified fact. */
+  fields?: string[];
+  /** Index of the rail field to mark live, if any. */
+  live?: number;
+}
+
+const { headline, lede, image, alt, focus = '50% 50%', fields = [], live } = Astro.props;
+---
+
+<section class="page-hero">
+  <div class="field page-hero__field">
+    <Image
+      src={image}
+      alt={alt}
+      widths={[640, 960, 1280, 1600, 2000]}
+      sizes="100vw"
+      loading="eager"
+      fetchpriority="high"
+      style={`object-position: ${focus}`}
+    />
+    <div class="field__scrim"></div>
+    <div class="field__caption">
+      <div class="shell">
+        <h1 class="display page-hero__headline" set:html={headline} />
+        {lede && <p class="lede page-hero__lede">{lede}</p>}
+      </div>
+    </div>
+  </div>
+
+  {
+    fields.length > 0 && (
+      <div class="shell">
+        <div class="rail page-hero__rail">
+          {fields.map((field, index) => (
+            <p class:list={['rail__field', index === live && 'rail__field--live']}>
+              {index === live && <span class="rail__dot" aria-hidden="true" />}
+              <span class="rail-text">{field}</span>
+            </p>
+          ))}
+        </div>
+      </div>
+    )
+  }
+</section>
+
+<style>
+  .page-hero__field {
+    height: clamp(24rem, 68vh, 40rem);
+  }
+
+  .page-hero__headline {
+    max-width: 16ch;
+  }
+
+  .page-hero__lede {
+    margin-top: 1.25rem;
+    max-width: 44ch;
+  }
+
+  .page-hero__rail {
+    border-top: 0;
+  }
+</style>

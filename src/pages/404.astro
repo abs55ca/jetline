@@ -1,0 +1,88 @@
+---
+import { Image } from 'astro:assets';
+import Layout from '../layouts/Layout.astro';
+import { site } from '../data/site';
+
+import movementChevrons from '../assets/photos/movement-chevrons.jpg';
+---
+
+<Layout
+  title="Page not found | Jetline Executive Ground Transportation"
+  description="That page could not be found. Return to Jetline Executive Ground Transportation, serving the Greater Toronto Area."
+>
+  <section class="lost">
+    <div class="field lost__field">
+      <Image
+        src={movementChevrons}
+        alt=""
+        widths={[640, 960, 1280, 1600]}
+        sizes="100vw"
+        loading="eager"
+        style="object-position: 38% 50%"
+      />
+      <div class="field__scrim"></div>
+      <div class="field__caption">
+        <div class="shell">
+          <h1 class="display lost__headline">Wrong turn.</h1>
+          <p class="lede lost__lede">
+            That page isn&rsquo;t here. The routes below are.
+          </p>
+          <div class="lost__actions">
+            <a class="action action--primary" href="/">
+              Home
+              <span class="action__arrow" aria-hidden="true">&rarr;</span>
+            </a>
+            <a class="action" href="/request/">Request service</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="shell">
+      <div class="rail lost__rail">
+        <a class="rail__field" href="/aviation/"><span class="rail-text">Aviation</span></a>
+        <a class="rail__field" href="/corporate/"><span class="rail-text">Corporate</span></a>
+        <a class="rail__field" href="/airport-transfers/"
+          ><span class="rail-text">Airport transfers</span></a
+        >
+        <a class="rail__field" href="/fleet/"><span class="rail-text">Fleet</span></a>
+        <a class="rail__field rail__field--push" href={`mailto:${site.email}`}
+          ><span class="rail-text">Email dispatch</span></a
+        >
+      </div>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .lost__field {
+    height: clamp(26rem, 74vh, 44rem);
+  }
+
+  .lost__headline {
+    max-width: 14ch;
+  }
+
+  .lost__lede {
+    margin-top: 1.25rem;
+  }
+
+  .lost__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-top: 2rem;
+  }
+
+  .lost__rail {
+    border-top: 0;
+  }
+
+  .lost__rail a {
+    transition: color 0.4s var(--ease);
+  }
+
+  .lost__rail a:hover .rail-text {
+    color: var(--signal);
+  }
+</style>

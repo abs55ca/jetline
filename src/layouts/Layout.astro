@@ -1,23 +1,162 @@
+---
+import '../styles/global.css';
+import SiteHeader from '../components/SiteHeader.astro';
+import SiteFooter from '../components/SiteFooter.astro';
+import { site } from '../data/site';
+
+interface Props {
+  title: string;
+  description: string;
+  /** Absolute or root-relative path to the social card image. */
+  ogImage?: string;
+}
+
+const { title, description, ogImage = '/og.jpg' } = Astro.props;
+
+const canonical = new URL(Astro.url.pathname, Astro.site).href;
+const ogImageUrl = new URL(ogImage, Astro.site).href;
+
+/**
+ * Structured data describes only what is verified. There is deliberately no
+ * telephone and no postal address: the business has not published either, and a
+ * placeholder in schema is worse than an omission.
+ */
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'LocalBusiness',
+  '@id': `${site.url}/#business`,
+  name: site.legalName,
+  alternateName: site.name,
+  url: site.url,
+  email: site.email,
+  description:
+    'Executive ground transportation for airline crews, corporate accounts and airport transfers across the Greater Toronto Area.',
+  areaServed: {
+    '@type': 'AdministrativeArea',
+    name: 'Greater Toronto Area',
+    containedInPlace: {
+      '@type': 'AdministrativeArea',
+      name: 'Ontario, Canada',
+    },
+  },
+  openingHoursSpecification: {
+    '@type': 'OpeningHoursSpecification',
+    dayOfWeek: [
+      'Monday',
+      'Tuesday',
+      'Wednesday',
+      'Thursday',
+      'Friday',
+      'Saturday',
+      'Sunday',
+    ],
+    opens: '00:00',
+    closes: '23:59',
+  },
+  knowsAbout: [
+    'Airline crew transportation',
+    'Airport transfers',
+    'Corporate ground transportation',
+    'Private aviation and FBO transfers',
+  ],
+};
+---
+
 <!doctype html>
 <html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<meta name="viewport" content="width=device-width" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro Basics</title>
-	</head>
-	<body>
-		<slot />
-	</body>
-</html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
 
-<style>
-	html,
-	body {
-		margin: 0;
-		width: 100%;
-		height: 100%;
-	}
-</style>
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+    <meta name="theme-color" content="#0a0b0d" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={site.legalName} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImageUrl} />
+    <meta property="og:locale" content="en_CA" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImageUrl} />
+
+    <link rel="sitemap" href="/sitemap-index.xml" />
+
+    <script is:inline>
+      // Marks the document before first paint so the reveal system can hide its
+      // targets. Without JS nothing is ever hidden.
+      document.documentElement.classList.add('js');
+    </script>
+
+    <script type="application/ld+json" set:html={JSON.stringify(schema)} />
+  </head>
+
+  <body>
+    <!--
+      THESIS: Ground transport sold as coordinated movement, not vehicles. Refuses the
+      category's dark-hero-plus-six-service-cards arrangement.
+      OWN-WORLD: Near-black #0a0b0d, bone #e8e4dc, one sodium amber #ff8a3d. Hairline
+      rules are the only chrome. Archivo width axis for display, Azeret Mono for fixed
+      -width data fields. No cards, pills, gradients or rounded corners.
+      STORY: A crew scheduler sees an operator fluent in flight timing, and requests service.
+      FIRST VIEWPORT: Full-screen black SUV on night asphalt, Ontario plate. Wordmark
+      top-left in clear air. Four-word headline low-left. Full-width ruled rail on the
+      bottom edge carrying GTA, 24/7/365, 25+ years, and the amber request cell.
+      FORM: Progress Strip, from the ATC flight progress strip. Candidate 5 of 7 on the
+      grounded list. Seed key bd667e21.
+      FINISH: unreviewed and undocumented is unfinished; this build ends with the finish
+      review, the verdict, and DESIGN.md
+    -->
+    <a class="skip-link" href="#main">Skip to content</a>
+    <SiteHeader />
+    <main id="main">
+      <slot />
+    </main>
+    <SiteFooter />
+
+    <script>
+      // The strip advance. One observer drives every reveal on the page; each
+      // target keeps its final state once it has arrived.
+      const targets = document.querySelectorAll<HTMLElement>(
+        '[data-reveal], [data-reveal-media], [data-rule]'
+      );
+
+      if (targets.length) {
+        const observer = new IntersectionObserver(
+          (entries) => {
+            for (const entry of entries) {
+              if (!entry.isIntersecting) continue;
+              entry.target.classList.add('is-in');
+              observer.unobserve(entry.target);
+            }
+          },
+          { rootMargin: '0px 0px -12% 0px', threshold: 0.08 }
+        );
+
+        for (const target of targets) observer.observe(target);
+      }
+
+      // The header sits transparent over the hero and takes a ground once the
+      // page has moved past it.
+      const header = document.querySelector('[data-header]');
+      if (header) {
+        const sentinel = document.createElement('div');
+        sentinel.setAttribute('aria-hidden', 'true');
+        sentinel.style.cssText = 'position:absolute;top:0;height:1px;width:1px;';
+        document.body.prepend(sentinel);
+
+        new IntersectionObserver(
+          ([entry]) => header.classList.toggle('is-stuck', !entry.isIntersecting),
+          { threshold: 0 }
+        ).observe(sentinel);
+      }
+    </script>
+  </body>
+</html>

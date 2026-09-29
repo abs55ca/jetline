@@ -1,11 +1,715 @@
 ---
-import Welcome from '../components/Welcome.astro';
+import { Image } from 'astro:assets';
 import Layout from '../layouts/Layout.astro';
+import CtaBand from '../components/CtaBand.astro';
+import { fleet, leadServices, moreServices, proof } from '../data/site';
 
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+import heroSuv from '../assets/photos/hero-suv-night.jpg';
+import doorHandle from '../assets/photos/door-handle-rain.jpg';
+import crewCaptain from '../assets/photos/crew-captain.jpg';
+import movementChevrons from '../assets/photos/movement-chevrons.jpg';
+import executiveSedan from '../assets/photos/executive-sedan.jpg';
+import torontoSkyline from '../assets/photos/toronto-skyline.jpg';
+import torontoFinancial from '../assets/photos/toronto-financial.jpg';
+import sedanHotel from '../assets/photos/sedan-hotel.jpg';
+import aviationRunway from '../assets/photos/aviation-runway.jpg';
+import fleetSedan from '../assets/photos/fleet-sedan.jpg';
+import interiorDetail from '../assets/photos/interior-detail.jpg';
+
+const panelArt = [
+  {
+    image: crewCaptain,
+    alt: 'An airline captain in uniform walking a terminal kerb with a crew roller bag.',
+    focus: '50% 42%',
+  },
+  {
+    image: movementChevrons,
+    alt: 'A dark sedan crossing wet asphalt painted with lane chevrons, seen from above at night.',
+    focus: '38% 50%',
+  },
+  {
+    image: executiveSedan,
+    alt: 'An executive stepping into a black sedan held open outside a modern office building.',
+    focus: '50% 30%',
+  },
+];
+
+const panels = leadServices.map((service, index) => ({ ...service, ...panelArt[index] }));
 ---
 
-<Layout>
-	<Welcome />
+<Layout
+  title="Jetline — Executive Ground Transportation | Airline Crew &amp; Corporate, Toronto"
+  description="Executive ground transportation across the Greater Toronto Area. Airline crew transfers, airport transfers, and corporate accounts, dispatched 24/7/365. 25+ years."
+>
+  <!-- 01 ......................................................... hero -->
+  <section class="hero">
+    <div class="hero__field">
+      <Image
+        src={heroSuv}
+        alt="A black executive SUV standing under a single light on dark asphalt at night, carrying an Ontario licence plate."
+        widths={[640, 960, 1280, 1600, 2000]}
+        sizes="100vw"
+        loading="eager"
+        fetchpriority="high"
+        class="hero__img"
+      />
+      <div class="field__scrim"></div>
+    </div>
+
+    <div class="hero__body shell">
+      <h1 class="display hero__headline">We move on<br />flight time.</h1>
+      <p class="lede hero__lede">
+        Executive ground transportation across the Greater Toronto Area.
+      </p>
+    </div>
+
+    <div class="hero__rail">
+      <div class="shell">
+        <div class="rail">
+          <p class="rail__field"><span class="rail-text">Greater Toronto Area</span></p>
+          <p class="rail__field rail__field--live">
+            <span class="rail__dot" aria-hidden="true"></span>
+            <span class="rail-text">Dispatch 24/7/365</span>
+          </p>
+          <p class="rail__field"><span class="rail-text">25+ years</span></p>
+          <a class="rail__field rail__field--push hero__request" href="/request/">
+            <span class="rail-text">Request service</span>
+            <span class="action__arrow" aria-hidden="true">&rarr;</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 02 .................................................... statement -->
+  <section class="strip shell">
+    <div class="split split--flip">
+      <div class="field field--tall" data-reveal-media>
+        <Image
+          src={doorHandle}
+          alt="A hand resting on the door handle of a rain-beaded black sedan."
+          widths={[420, 640, 900, 1200]}
+          sizes="(min-width: 60rem) 42vw, 100vw"
+          loading="lazy"
+          class="statement__img"
+        />
+      </div>
+      <div class="statement">
+        <h2 class="headline" data-reveal>The vehicle is the easy part.</h2>
+        <p class="prose statement__body">
+          Timing, coordination and discretion are the service. A crew that reports late is a
+          compliance problem, not an inconvenience — so we plan backwards from the moment the
+          door has to open.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 03 ..................................................... aviation -->
+  <section class="strip aviation">
+    <div class="field field--full" data-reveal-media>
+      <Image
+        src={aviationRunway}
+        alt="A runway at dusk seen down its length, edge and centreline lights running to the horizon."
+        widths={[640, 960, 1440, 1920, 2400]}
+        sizes="100vw"
+        loading="lazy"
+        class="aviation__img"
+      />
+      <div class="field__scrim"></div>
+      <div class="field__caption">
+        <div class="shell">
+          <h2 class="display aviation__headline" data-reveal>When the flight<br />moves, we move.</h2>
+          <p class="lede aviation__lede">
+            Six years supporting airline crew operations at Billy Bishop. We watch the flight,
+            not the booking.
+          </p>
+          <a class="link-arrow aviation__link" href="/aviation/">
+            Aviation operations
+            <span class="action__arrow" aria-hidden="true">&rarr;</span>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="shell">
+      <div class="rail aviation__rail">
+        <p class="rail__field"><span class="rail-text">Airline crew</span></p>
+        <p class="rail__field"><span class="rail-text">Billy Bishop YTZ</span></p>
+        <p class="rail__field"><span class="rail-text">Private aviation &amp; FBO</span></p>
+        <p class="rail__field rail__field--live">
+          <span class="rail__dot" aria-hidden="true"></span>
+          <span class="rail-text">6+ years</span>
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 04 ..................................................... services -->
+  <section class="strip shell" aria-labelledby="services-heading">
+    <h2 class="headline services__heading" id="services-heading" data-reveal>
+      What we run.
+    </h2>
+
+    <div class="panels">
+      {
+        panels.map((panel) => (
+          <a class="panel" href={panel.href}>
+            <div class="field panel__field" data-reveal-media>
+              <Image
+                src={panel.image}
+                alt={panel.alt}
+                widths={[400, 600, 900, 1200]}
+                sizes="(min-width: 64rem) 30vw, (min-width: 44rem) 46vw, 100vw"
+                loading="lazy"
+                style={`object-position: ${panel.focus}`}
+              />
+            </div>
+            <div class="panel__body">
+              <h3 class="subhead">{panel.name}</h3>
+              <p class="panel__line">{panel.blurb}</p>
+              <span class="link-arrow panel__link">
+                View
+                <span class="action__arrow" aria-hidden="true">
+                  &rarr;
+                </span>
+              </span>
+            </div>
+          </a>
+        ))
+      }
+    </div>
+
+    <!-- The remaining services as a ruled ledger — a strip stack, not a card grid.
+         Nothing here repeats a panel above it. -->
+    <ul class="ledger">
+      {
+        moreServices.map((service) => (
+          <li class="ledger__row">
+            <a class="ledger__link" href={service.href}>
+              <span class="ledger__name subhead">{service.name}</span>
+              <span class="ledger__line">{service.blurb}</span>
+              <span class="ledger__arrow action__arrow" aria-hidden="true">
+                &rarr;
+              </span>
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+
+  <!-- 05 ...................................................... toronto -->
+  <section class="strip toronto">
+    <div class="field toronto__field" data-reveal-media>
+      <Image
+        src={torontoSkyline}
+        alt="The Toronto skyline at blue hour seen across the lake, CN Tower centred."
+        widths={[640, 960, 1440, 1920, 2400]}
+        sizes="100vw"
+        loading="lazy"
+      />
+      <div class="field__scrim"></div>
+      <div class="field__caption">
+        <div class="shell">
+          <h2 class="display toronto__headline" data-reveal>The GTA, at every<br />hour of it.</h2>
+          <p class="lede toronto__lede">
+            Downtown, the airports, the corporate campuses, the hotels. Including the hours
+            nobody else wants.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 06 .................................................... corporate -->
+  <section class="strip shell">
+    <div class="split">
+      <div class="field field--tall" data-reveal-media>
+        <Image
+          src={torontoFinancial}
+          alt="Toronto's financial district at night, office towers compressed above a single figure crossing the street."
+          widths={[420, 640, 900, 1400]}
+          sizes="(min-width: 60rem) 56vw, 100vw"
+          loading="lazy"
+        />
+      </div>
+
+      <div class="corporate__body">
+        <h2 class="headline" data-reveal>Corporate travel,<br />without the follow-up.</h2>
+        <p class="prose corporate__copy">
+          Standing accounts with a named contact. Book the movement once, then stop thinking
+          about it.
+        </p>
+        <div class="field field--wide corporate__inset" data-reveal-media>
+          <Image
+            src={sedanHotel}
+            alt="A chauffeur holding an umbrella as a passenger steps to a black sedan at a hotel entrance."
+            widths={[400, 640, 900]}
+            sizes="(min-width: 60rem) 38vw, 100vw"
+            loading="lazy"
+            class="corporate__inset-img"
+          />
+        </div>
+        <a class="link-arrow" href="/corporate/">
+          Corporate accounts
+          <span class="action__arrow" aria-hidden="true">&rarr;</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- 07 ................................................... experience -->
+  <section class="strip experience" aria-labelledby="experience-heading">
+    <div class="field field--full experience__field" data-reveal-media>
+      <Image
+        src={interiorDetail}
+        alt="The black leather rear headrest of an executive vehicle, lit low and shot close."
+        widths={[640, 960, 1440, 1600]}
+        sizes="100vw"
+        loading="lazy"
+        class="experience__img"
+      />
+      <div class="experience__scrim"></div>
+    </div>
+
+    <div class="experience__overlay shell">
+      <h2 class="visually-hidden" id="experience-heading">Experience</h2>
+      <!-- Oversized numerals over photography, as briefed. Each entry steps
+           further into the field so the three read as one composition rather
+           than as three rows of a table. -->
+      <dl class="record" data-reveal>
+        {
+          proof.map((item) => (
+            <div class="record__entry">
+              <dt class="record__figure">{item.figure}</dt>
+              <dd class="record__label rail-text">{item.label}</dd>
+            </div>
+          ))
+        }
+      </dl>
+    </div>
+  </section>
+
+  <!-- 08 ........................................................ fleet
+       One frame and a ruled ledger. The three-vehicle set belongs to /fleet/;
+       repeating it here would say the same thing twice and give the page two
+       identical three-across rows in a row. -->
+  <section class="strip shell" aria-labelledby="fleet-heading">
+    <div class="split split--flip">
+      <div class="field field--tall" data-reveal-media>
+        <Image
+          src={fleetSedan}
+          alt="A black executive sedan at the kerb after dark, city lights out of focus behind it."
+          widths={[420, 640, 900, 1200]}
+          sizes="(min-width: 60rem) 42vw, 100vw"
+          loading="lazy"
+          style="object-position: 40% 50%"
+        />
+      </div>
+
+      <div class="fleet__body">
+        <h2 class="headline" id="fleet-heading" data-reveal>Three ways to move.</h2>
+        <ul class="ledger fleet__ledger">
+          {
+            fleet.map((item) => (
+              <li class="ledger__row">
+                <div class="ledger__item">
+                  <h3 class="ledger__name subhead">{item.name}</h3>
+                  <p class="ledger__line">{item.blurb}</p>
+                </div>
+              </li>
+            ))
+          }
+        </ul>
+        <p class="fleet__note">
+          Beyond our own vehicles, a vetted affiliate network scales for volume.
+        </p>
+        <a class="link-arrow" href="/fleet/">
+          See the fleet
+          <span class="action__arrow" aria-hidden="true">&rarr;</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- 09 ......................................................... call -->
+  <CtaBand />
 </Layout>
+
+<style>
+  .visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+
+  /* ---------------------------------------------------------------- hero */
+
+  .hero {
+    position: relative;
+    min-height: 100svh;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    isolation: isolate;
+  }
+
+  .hero__field {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    overflow: clip;
+    background: var(--ink-deep);
+  }
+
+  .hero__img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    /* Art direction: the vehicle sits low in the frame, so the crop is pulled
+       down on wide viewports and left nearer centre on tall ones. */
+    object-position: 50% 58%;
+  }
+
+  .hero__body {
+    padding-bottom: clamp(2.5rem, 6vw, 4.5rem);
+  }
+
+  .hero__headline {
+    max-width: 14ch;
+  }
+
+  .hero__lede {
+    margin-top: 1.5rem;
+  }
+
+  .hero__rail {
+    border-top: 1px solid var(--rule);
+    background: rgba(6, 7, 8, 0.5);
+    backdrop-filter: blur(10px);
+  }
+
+  .hero__rail .rail {
+    border-top: 0;
+    border-bottom: 0;
+  }
+
+  .hero__request {
+    color: var(--signal);
+    transition: background-color 0.45s var(--ease), color 0.45s var(--ease);
+  }
+
+  .hero__request .rail-text {
+    color: inherit;
+  }
+
+  .hero__request:hover {
+    background: var(--signal);
+    color: var(--ink);
+  }
+
+  .hero__request .action__arrow {
+    transition: transform 0.45s var(--ease);
+  }
+
+  .hero__request:hover .action__arrow {
+    transform: translateX(4px);
+  }
+
+  /* Art direction, not a stack. On a tall phone the wide crop leaves half a
+     screen of empty black above the vehicle, so the frame is pulled up until
+     the SUV and its Ontario plate sit inside the first viewport. */
+  @media (max-width: 40rem) {
+    .hero__img {
+      object-position: 50% 32%;
+    }
+
+    .hero__headline {
+      max-width: 11ch;
+    }
+  }
+
+  @media (min-width: 75rem) {
+    .hero__img {
+      object-position: 50% 64%;
+    }
+  }
+
+  /* ----------------------------------------------------------- statement */
+
+  /* The subject is the hand on the handle, which sits high in the frame — a
+     centred crop throws it away and leaves a wheel arch. */
+  .statement__img {
+    object-position: 50% 20%;
+  }
+
+  .statement {
+    padding-bottom: clamp(0.5rem, 2vw, 2rem);
+  }
+
+  .statement__body {
+    margin-top: 1.5rem;
+  }
+
+  /* ------------------------------------------------------------ aviation */
+
+  /* The runway runs through the upper half of the frame; holding it there keeps
+     the lower half dark enough to carry the headline unaided. */
+  .aviation__img {
+    object-position: 50% 38%;
+  }
+
+  .aviation__headline {
+    max-width: 16ch;
+  }
+
+  .aviation__lede {
+    margin-top: 1.25rem;
+    max-width: 40ch;
+  }
+
+  .aviation__link {
+    margin-top: 1.5rem;
+  }
+
+  .aviation__rail {
+    border-top: 0;
+  }
+
+  /* ------------------------------------------------------------ services */
+
+  .services__heading {
+    max-width: 18ch;
+    margin-bottom: clamp(2rem, 5vw, 3.5rem);
+  }
+
+  .panels {
+    display: grid;
+    gap: clamp(1.25rem, 3vw, 2rem);
+  }
+
+  .panel {
+    display: grid;
+    gap: 1.25rem;
+  }
+
+  .panel__field {
+    aspect-ratio: 4 / 5;
+  }
+
+  .panel__field :global(img) {
+    transition: transform 1.4s var(--ease);
+  }
+
+  .panel:hover .panel__field :global(img) {
+    transform: scale(1.04);
+  }
+
+  .panel__body {
+    display: grid;
+    gap: 0.6rem;
+  }
+
+  .panel__line {
+    color: var(--bone-dim);
+    font-size: var(--step--1);
+    line-height: 1.5;
+    max-width: 32ch;
+    text-wrap: pretty;
+  }
+
+  .panel__link {
+    margin-top: 0.35rem;
+    color: var(--bone-dim);
+  }
+
+  .panel:hover .panel__link {
+    color: var(--bone);
+  }
+
+  @media (min-width: 44rem) {
+    .panels {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    /* Asymmetry: the middle panel drops and runs taller so the row reads as a
+       composition rather than three equal tiles. */
+    .panel:nth-child(2) {
+      margin-top: clamp(1.5rem, 5vw, 4rem);
+    }
+
+    .panel:nth-child(2) .panel__field {
+      aspect-ratio: 3 / 4;
+    }
+  }
+
+  .ledger {
+    margin-top: clamp(3rem, 7vw, 5rem);
+  }
+
+  /* ------------------------------------------------------------- toronto */
+
+  .toronto__field {
+    height: clamp(28rem, 72vh, 44rem);
+  }
+
+  /* Bias toward the skyline. A centred crop on this frame gives half a screen
+     of empty lake. */
+  .toronto__field :global(img) {
+    object-position: 50% 34%;
+  }
+
+  .toronto__headline {
+    max-width: 15ch;
+  }
+
+  .toronto__lede {
+    margin-top: 1.25rem;
+    max-width: 42ch;
+  }
+
+  /* ----------------------------------------------------------- corporate */
+
+  .corporate__body {
+    display: grid;
+    gap: 1.5rem;
+    justify-items: start;
+    padding-bottom: clamp(0.5rem, 2vw, 1.5rem);
+  }
+
+  .corporate__copy {
+    max-width: 36ch;
+  }
+
+  .corporate__inset {
+    width: 100%;
+  }
+
+  /* Favour the chauffeur and vehicle on the left; the right of this frame is a
+     pale hotel facade that fights the section. */
+  .corporate__inset-img {
+    object-position: 22% 60%;
+  }
+
+  /* ---------------------------------------------------------- experience */
+
+  .experience {
+    position: relative;
+    isolation: isolate;
+  }
+
+  .experience__field {
+    height: clamp(26rem, 70vh, 42rem);
+  }
+
+  .experience__img {
+    object-position: 50% 35%;
+  }
+
+  .experience__scrim {
+    position: absolute;
+    inset: 0;
+    background: rgba(6, 7, 8, 0.62);
+  }
+
+  .experience__overlay {
+    position: absolute;
+    inset-inline: 0;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+
+  .record {
+    margin: 0;
+  }
+
+  .record__entry {
+    display: flex;
+    align-items: baseline;
+    gap: clamp(0.75rem, 2.5vw, 1.75rem);
+    padding-block: clamp(0.35rem, 1vw, 0.6rem);
+  }
+
+  /* The step. Each entry starts further in than the one above it, which is what
+     turns a stack of facts into a composition. Kept modest so the label beside
+     it keeps enough measure to set on two lines. */
+  .record__entry:nth-child(2) {
+    margin-left: clamp(1.25rem, 6vw, 5.5rem);
+  }
+
+  .record__entry:nth-child(3) {
+    margin-left: clamp(2.5rem, 12vw, 11rem);
+  }
+
+  .record__figure {
+    font-size: clamp(3rem, 9vw, 6.5rem);
+    font-weight: 660;
+    font-stretch: 80%;
+    line-height: 0.86;
+    letter-spacing: -0.045em;
+    flex: none;
+  }
+
+  /* Wide enough that the label sets on two lines rather than ragging into a
+     four-line stack beside the numeral. */
+  .record__label {
+    margin: 0;
+    color: var(--bone-dim);
+    min-width: 0;
+    max-width: 30ch;
+    line-height: 1.5;
+    letter-spacing: 0.11em;
+  }
+
+  @media (max-width: 30rem) {
+    .record__entry {
+      align-items: baseline;
+      gap: 0.75rem;
+    }
+
+    .record__label {
+      max-width: 16ch;
+    }
+  }
+
+  /* --------------------------------------------------------------- fleet */
+
+  /* Centred, not bottom-aligned. The ledger is much shorter than the frame it
+     sits beside, and pinning it to the baseline opened a tall empty quadrant
+     above the heading that read as a hole rather than as whitespace. */
+  .fleet__body {
+    align-self: center;
+    padding-block: clamp(0.5rem, 2vw, 1.5rem);
+  }
+
+  .fleet__ledger {
+    margin-top: clamp(1.5rem, 4vw, 2.25rem);
+  }
+
+  .fleet__note {
+    margin-top: 1.5rem;
+    color: var(--bone-dim);
+    font-size: var(--step--1);
+    line-height: 1.6;
+    max-width: 34ch;
+    text-wrap: pretty;
+  }
+
+  .fleet__body .link-arrow {
+    margin-top: 1.25rem;
+  }
+
+  /* The ledger sits in a narrow column here, so the wide three-track layout
+     would crush it. */
+  .fleet__ledger .ledger__item {
+    grid-template-columns: 1fr;
+  }
+
+  .fleet__ledger .ledger__line {
+    grid-column: 1;
+  }
+</style>

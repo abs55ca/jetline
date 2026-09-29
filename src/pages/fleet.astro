@@ -1,0 +1,189 @@
+---
+import { Image } from 'astro:assets';
+import Layout from '../layouts/Layout.astro';
+import PageHero from '../components/PageHero.astro';
+import CtaBand from '../components/CtaBand.astro';
+import { fleet } from '../data/site';
+
+import heroSuv from '../assets/photos/hero-suv-night.jpg';
+import fleetSedan from '../assets/photos/fleet-sedan.jpg';
+import fleetSuv from '../assets/photos/fleet-suv.jpg';
+import fleetVan from '../assets/photos/fleet-van.jpg';
+import interiorDetail from '../assets/photos/interior-detail.jpg';
+
+/**
+ * No make, model, or seat count appears anywhere on this page. None of it is
+ * verified: a vehicle photographed for stock is not evidence of what this
+ * operator owns, and a capacity figure invented from category norms is exactly
+ * the kind of detail a client would later hold the business to.
+ */
+const vehicles = [
+  {
+    ...fleet[0],
+    image: fleetSedan,
+    alt: 'A black executive sedan at the kerb after dark, city lights out of focus behind it.',
+    focus: '40% 50%',
+    /** Fuller copy than the homepage ledger — this is the page people arrive on
+     *  when they actually need to choose. */
+    detail:
+      'The default for a single traveller or a pair. Quiet at speed, small enough for downtown kerbs, and the right call when the luggage is carry-on.',
+  },
+  {
+    ...fleet[1],
+    image: fleetSuv,
+    alt: 'A black premium SUV photographed at dusk.',
+    focus: '50% 62%',
+    detail:
+      'What most airport work goes out in. Full-size cases fit without anyone negotiating with the boot, and the higher seat makes a long transfer easier at the end of a flight.',
+  },
+  {
+    ...fleet[2],
+    image: fleetVan,
+    alt: 'A black high-roof passenger van, photographed close on the vehicle body.',
+    focus: '50% 50%',
+    detail:
+      'A whole crew or a whole party in one movement, which is one arrival time to track instead of four. The workhorse behind the rotations.',
+  },
+];
+---
+
+<Layout
+  title="Fleet — Executive Sedan, Premium SUV, Sprinter Van | Jetline, Toronto"
+  description="Jetline's fleet: executive sedan, premium SUV and Sprinter passenger van, with a vetted affiliate network for volume. Greater Toronto Area."
+>
+  <PageHero
+    headline="Matched to<br />the movement."
+    lede="Three vehicle types, chosen by passengers and luggage rather than by price tier."
+    image={heroSuv}
+    alt="A black executive SUV standing under a single light on dark asphalt at night."
+    focus="50% 62%"
+    fields={['Executive sedan', 'Premium SUV', 'Sprinter van', 'Affiliate network']}
+  />
+
+  <section class="strip shell" aria-labelledby="vehicles-heading">
+    <h2 class="visually-hidden" id="vehicles-heading">Vehicles</h2>
+    <div class="vehicles">
+      {
+        vehicles.map((vehicle, index) => (
+          <figure class="vehicle" data-reveal style={`--delay: ${index * 0.08}s`}>
+            <div class="field vehicle__field" data-reveal-media>
+              <Image
+                src={vehicle.image}
+                alt={vehicle.alt}
+                widths={[380, 560, 800, 1100]}
+                sizes="(min-width: 64rem) 31vw, (min-width: 44rem) 46vw, 100vw"
+                loading="lazy"
+                style={`object-position: ${vehicle.focus}`}
+              />
+            </div>
+            <figcaption class="vehicle__caption">
+              <h3 class="vehicle__name">{vehicle.name}</h3>
+              <p class="vehicle__line">{vehicle.detail}</p>
+            </figcaption>
+          </figure>
+        ))
+      }
+    </div>
+
+  </section>
+
+  <section class="strip shell">
+    <div class="split">
+      <div class="field field--wide" data-reveal-media>
+        <Image
+          src={interiorDetail}
+          alt="The black leather rear headrest of an executive vehicle, lit low and shot close."
+          widths={[420, 640, 900, 1400]}
+          sizes="(min-width: 60rem) 56vw, 100vw"
+          loading="lazy"
+          style="object-position: 50% 35%"
+        />
+      </div>
+      <div class="standards">
+        <h2 class="headline" data-reveal>Beyond our<br />own vehicles.</h2>
+        <div class="prose standards__copy" data-reveal>
+          <p>
+            Volume work &mdash; a full crew rotation, a conference, a shuttle programme &mdash;
+            can exceed any single operator&rsquo;s fleet. When it does, we scale through a
+            vetted affiliate network rather than turning the work away or quietly lowering the
+            standard.
+          </p>
+          <p>
+            The vehicle you are shown is the vehicle that arrives. If something changes, you
+            hear it from us first.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <CtaBand headline="Not sure which<br />vehicle?" lede="Tell us the party and the luggage." />
+</Layout>
+
+<style>
+  .visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+
+  .vehicles {
+    display: grid;
+    gap: clamp(1.5rem, 3vw, 2.25rem);
+  }
+
+  .vehicle {
+    display: grid;
+    gap: 1.1rem;
+    margin: 0;
+  }
+
+  .vehicle__field {
+    aspect-ratio: 3 / 4;
+  }
+
+  .vehicle__caption {
+    display: grid;
+    gap: 0.5rem;
+    border-top: 1px solid var(--rule);
+    padding-top: 1rem;
+  }
+
+  .vehicle__name {
+    font-size: var(--step-1);
+    font-weight: 580;
+    font-stretch: 92%;
+    letter-spacing: -0.012em;
+  }
+
+  .vehicle__line {
+    color: var(--bone-dim);
+    font-size: var(--step--1);
+    line-height: 1.55;
+    max-width: 34ch;
+    text-wrap: pretty;
+  }
+
+
+  .vehicle__detail {
+    color: var(--bone-faint);
+    margin-top: 0.35rem;
+  }
+
+  .standards {
+    padding-bottom: clamp(0.5rem, 2vw, 2rem);
+  }
+
+  .standards__copy {
+    margin-top: 1.5rem;
+  }
+
+  @media (min-width: 44rem) {
+    .vehicles {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+</style>

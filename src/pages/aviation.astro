@@ -1,0 +1,152 @@
+---
+import { Image } from 'astro:assets';
+import Layout from '../layouts/Layout.astro';
+import PageHero from '../components/PageHero.astro';
+import CtaBand from '../components/CtaBand.astro';
+
+import aviationRunway from '../assets/photos/aviation-runway.jpg';
+import crewCaptain from '../assets/photos/crew-captain.jpg';
+import terminalWindow from '../assets/photos/terminal-window.jpg';
+
+/**
+ * Only capabilities the owner confirmed appear here. Note the deliberate absence
+ * of any regulator name: the incumbent site cited the FAA, which is the wrong
+ * jurisdiction for a Toronto operator.
+ */
+const capabilities = [
+  {
+    name: 'Crew rest and report times',
+    line: 'Pickups planned backwards from the report time, so rest periods stay intact and nobody is waiting in a lobby with a bag.',
+  },
+  {
+    name: 'Flight monitoring',
+    line: 'We track the flight and move the pickup with it. A delay is our problem before it becomes yours.',
+  },
+  {
+    name: 'Planeside and FBO',
+    line: 'Airside pickup at fixed-base operators, following the operator and airport protocol for the ramp we are on.',
+  },
+  {
+    name: 'Irregular operations',
+    line: 'Diversions, cancellations and repositioning, handled at whatever hour they happen.',
+  },
+  {
+    name: 'Crews and groups in one movement',
+    line: 'A full crew travels together in a single vehicle rather than being split across cars.',
+  },
+];
+---
+
+<Layout
+  title="Airline Crew &amp; Aviation Ground Transportation | Jetline, Toronto"
+  description="Airline crew transfers, private aviation and FBO ground transportation across the Greater Toronto Area. Six years supporting crew operations at Billy Bishop. Dispatch 24/7/365."
+>
+  <PageHero
+    headline="Built around<br />the flight."
+    lede="Airline crew transfers, private aviation and FBO ground transportation across the Greater Toronto Area."
+    image={aviationRunway}
+    alt="A runway at dusk seen down its length, edge and centreline lights running to the horizon."
+    focus="50% 38%"
+    fields={['Airline crew', 'Billy Bishop YTZ', 'Private aviation & FBO', '6+ years']}
+    live={3}
+  />
+
+  <section class="strip shell">
+    <div class="split">
+      <div class="field field--tall" data-reveal-media>
+        <Image
+          src={crewCaptain}
+          alt="An airline captain in uniform walking a terminal kerb with a crew roller bag."
+          widths={[420, 640, 900, 1400]}
+          sizes="(min-width: 60rem) 56vw, 100vw"
+          loading="lazy"
+          style="object-position: 50% 40%"
+        />
+      </div>
+      <div class="intro">
+        <h2 class="headline" data-reveal>A crew move is<br />not a car booking.</h2>
+        <div class="prose intro__copy" data-reveal>
+          <p>
+            Ground transport for a crew is scheduled against an aircraft, not a calendar. The
+            pickup time is whatever the flight makes it, and lateness costs the operator a
+            duty-time problem rather than an apology.
+          </p>
+          <p>
+            Six of our twenty-five years have gone into exactly this work, much of it at
+            <strong>Billy Bishop Toronto City Airport</strong>. It is the difference between a
+            provider who asks what time you want the car and one who asks for the tail number.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="strip shell" aria-labelledby="capabilities-heading">
+    <h2 class="headline capabilities__heading" id="capabilities-heading" data-reveal>
+      What that means in practice.
+    </h2>
+    <ul class="ledger">
+      {
+        capabilities.map((item) => (
+          <li class="ledger__row">
+            <div class="ledger__item">
+              <h3 class="ledger__name subhead">{item.name}</h3>
+              <p class="ledger__line">{item.line}</p>
+            </div>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+
+  <section class="strip">
+    <div class="field field--wide" data-reveal-media>
+      <Image
+        src={terminalWindow}
+        alt="An airport terminal window at dusk, an aircraft on the apron beyond empty seating."
+        widths={[640, 960, 1280, 1600]}
+        sizes="100vw"
+        loading="lazy"
+        style="object-position: 50% 45%"
+      />
+      <div class="field__scrim"></div>
+      <div class="field__caption">
+        <div class="shell">
+          <p class="quiet" data-reveal>
+            Dispatch answers at every hour of the year, because that is when flights move.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <CtaBand
+    headline="Send us a<br />rotation."
+    lede="Crew contracts, one-off charters, and FBO movements."
+  />
+</Layout>
+
+<style>
+  .intro {
+    padding-bottom: clamp(0.5rem, 2vw, 2rem);
+  }
+
+  .intro__copy {
+    margin-top: 1.5rem;
+  }
+
+  .capabilities__heading {
+    max-width: 20ch;
+    margin-bottom: clamp(2rem, 5vw, 3rem);
+  }
+
+  .quiet {
+    font-size: var(--step-2);
+    font-weight: 520;
+    font-stretch: 92%;
+    line-height: 1.25;
+    letter-spacing: -0.015em;
+    max-width: 26ch;
+    text-wrap: balance;
+  }
+</style>

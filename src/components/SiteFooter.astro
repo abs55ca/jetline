@@ -1,0 +1,152 @@
+---
+import Wordmark from './Wordmark.astro';
+import { site } from '../data/site';
+
+const year = new Date().getFullYear();
+---
+
+<footer class="footer">
+  <div class="shell">
+    <div class="footer__top">
+      <div class="footer__brand">
+        <Wordmark full />
+        <p class="footer__line">
+          Executive ground transportation for airline crews, corporate accounts and airport
+          transfers across the Greater Toronto Area.
+        </p>
+      </div>
+
+      <nav class="footer__cols" aria-label="Footer">
+        <div class="footer__col">
+          <h2 class="footer__heading rail-text">Services</h2>
+          <ul class="footer__links">
+            <li><a href="/aviation/">Airline crew &amp; aviation</a></li>
+            <li><a href="/airport-transfers/">Airport transfers</a></li>
+            <li><a href="/corporate/">Corporate &amp; executive</a></li>
+            <li><a href="/fleet/">Fleet</a></li>
+          </ul>
+        </div>
+
+        <div class="footer__col">
+          <h2 class="footer__heading rail-text">Company</h2>
+          <ul class="footer__links">
+            <li><a href="/about/">About</a></li>
+            <li><a href="/request/">Request service</a></li>
+          </ul>
+        </div>
+
+        <div class="footer__col">
+          <h2 class="footer__heading rail-text">Contact</h2>
+          <ul class="footer__links">
+            <li><a href={`mailto:${site.email}`}>{site.email}</a></li>
+            <li><span class="footer__static">{site.areaServed}</span></li>
+            <li><span class="footer__static">Dispatch {site.hours}</span></li>
+          </ul>
+        </div>
+      </nav>
+    </div>
+
+    <!--
+      Site-wide, not page-local. The photography is licensed stock showing the
+      vehicle classes Jetline operates, not Jetline's own vehicles, and the
+      confirmed answers forbid implying that a specific make or model is owned.
+      The most prominent vehicle on the site is the homepage hero, so the note
+      has to live somewhere every page carries.
+    -->
+    <p class="footer__disclosure rail-text">
+      Photography shows representative vehicle classes, not specific vehicles.
+    </p>
+
+    <div class="footer__rail rail">
+      <p class="rail__field"><span class="rail-text">&copy; {year} {site.legalName}</span></p>
+      <p class="rail__field rail__field--live">
+        <span class="rail__dot" aria-hidden="true"></span>
+        <span class="rail-text">Dispatch 24/7/365</span>
+      </p>
+      <p class="rail__field rail__field--push">
+        <span class="rail-text">Greater Toronto Area</span>
+      </p>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .footer {
+    margin-top: var(--strip-gap);
+    border-top: 1px solid var(--rule);
+    padding-top: clamp(3rem, 7vw, 5rem);
+    padding-bottom: clamp(1.5rem, 4vw, 2.5rem);
+  }
+
+  .footer__top {
+    display: grid;
+    gap: clamp(2.5rem, 6vw, 5rem);
+    padding-bottom: clamp(3rem, 7vw, 5rem);
+  }
+
+  .footer__line {
+    margin-top: 1.5rem;
+    max-width: 34ch;
+    color: var(--bone-dim);
+    font-size: var(--step--1);
+    line-height: 1.6;
+    text-wrap: pretty;
+  }
+
+  .footer__cols {
+    display: grid;
+    gap: clamp(2rem, 5vw, 3rem);
+  }
+
+  .footer__heading {
+    color: var(--bone-faint);
+    margin-bottom: 1.25rem;
+  }
+
+  .footer__links {
+    display: grid;
+    gap: 0.15rem;
+    font-size: var(--step--1);
+  }
+
+  /* Padded to a 24px minimum target rather than sitting at the text line box. */
+  .footer__links a,
+  .footer__links .footer__static {
+    display: inline-block;
+    padding-block: 0.3rem;
+    color: var(--bone-dim);
+    transition: color 0.4s var(--ease);
+  }
+
+  .footer__links a:hover {
+    color: var(--signal);
+  }
+
+  .footer__static {
+    color: var(--bone-faint);
+  }
+
+  .footer__disclosure {
+    color: var(--bone-faint);
+    padding-bottom: 1.1rem;
+    max-width: 52ch;
+    line-height: 1.6;
+  }
+
+  .footer__rail {
+    border-bottom: 0;
+  }
+
+  @media (min-width: 46rem) {
+    .footer__cols {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+
+  @media (min-width: 64rem) {
+    .footer__top {
+      grid-template-columns: 5fr 7fr;
+      align-items: start;
+    }
+  }
+</style>

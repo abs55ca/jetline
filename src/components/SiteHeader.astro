@@ -1,0 +1,306 @@
+---
+import Wordmark from './Wordmark.astro';
+import { nav, site } from '../data/site';
+
+const path = Astro.url.pathname;
+const isCurrent = (href: string) => path === href || (href !== '/' && path.startsWith(href));
+---
+
+<header class="header" data-header>
+  <div class="header__inner">
+    <a class="header__brand" href="/" aria-label={`${site.legalName} — home`}>
+      <Wordmark />
+    </a>
+
+    <nav class="header__nav" aria-label="Primary">
+      <ul class="header__list">
+        {
+          nav.map((item) => (
+            <li>
+              <a
+                class="header__link"
+                href={item.href}
+                aria-current={isCurrent(item.href) ? 'page' : undefined}
+              >
+                {item.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+
+    <a class="header__cta action" href="/request/">
+      Request service
+      <span class="action__arrow" aria-hidden="true">&rarr;</span>
+    </a>
+
+    <button
+      class="header__toggle"
+      type="button"
+      aria-expanded="false"
+      aria-controls="site-menu"
+      data-menu-toggle
+    >
+      <span class="header__toggle-label" data-menu-label>Menu</span>
+      <span class="header__toggle-rules" aria-hidden="true">
+        <span></span><span></span>
+      </span>
+    </button>
+  </div>
+
+  <!-- Mobile navigation. Ruled rows, in the same strip grammar as the page. -->
+  <div class="menu" id="site-menu" hidden data-menu>
+    <ul class="menu__list">
+      {
+        nav.map((item) => (
+          <li class="menu__row">
+            <a class="menu__link" href={item.href}>
+              <span>{item.label}</span>
+              <span class="menu__arrow" aria-hidden="true">
+                &rarr;
+              </span>
+            </a>
+          </li>
+        ))
+      }
+      <li class="menu__row">
+        <a class="menu__link" href="/airport-transfers/">
+          <span>Airport transfers</span>
+          <span class="menu__arrow" aria-hidden="true">&rarr;</span>
+        </a>
+      </li>
+    </ul>
+    <div class="menu__foot">
+      <a class="action action--primary menu__cta" href="/request/">
+        Request service
+        <span class="action__arrow" aria-hidden="true">&rarr;</span>
+      </a>
+      <a class="menu__email rail-text" href={`mailto:${site.email}`}>{site.email}</a>
+    </div>
+  </div>
+</header>
+
+<style>
+  .header {
+    position: fixed;
+    inset-inline: 0;
+    top: 0;
+    z-index: 50;
+    transition:
+      background-color 0.6s var(--ease),
+      border-color 0.6s var(--ease);
+    border-bottom: 1px solid transparent;
+  }
+
+  .header.is-stuck {
+    background: rgba(10, 11, 13, 0.86);
+    border-bottom-color: var(--rule);
+    backdrop-filter: blur(14px);
+  }
+
+  .header__inner {
+    display: flex;
+    align-items: center;
+    gap: clamp(1rem, 3vw, 2.5rem);
+    min-height: var(--header-h);
+    padding-inline: var(--gutter);
+    max-width: 96rem;
+    margin-inline: auto;
+  }
+
+  .header__brand {
+    margin-right: auto;
+    padding-block: 0.5rem;
+  }
+
+  .header__nav {
+    display: none;
+  }
+
+  .header__list {
+    display: flex;
+    gap: clamp(1.25rem, 2.4vw, 2.25rem);
+  }
+
+  .header__link {
+    position: relative;
+    font-family: var(--font-rail);
+    font-size: var(--step--2);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--bone-dim);
+    padding-block: 0.5rem;
+    transition: color 0.4s var(--ease);
+  }
+
+  .header__link::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 1px;
+    background: var(--signal);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.5s var(--ease);
+  }
+
+  .header__link:hover {
+    color: var(--bone);
+  }
+
+  .header__link:hover::after,
+  .header__link[aria-current='page']::after {
+    transform: scaleX(1);
+  }
+
+  .header__link[aria-current='page'] {
+    color: var(--bone);
+  }
+
+  .header__cta {
+    display: none;
+    padding: 0.8rem 1.15rem;
+  }
+
+  /* ------------------------------------------------------------- toggle */
+
+  .header__toggle {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    padding: 0.75rem 0;
+    font-family: var(--font-rail);
+    font-size: var(--step--2);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--bone);
+  }
+
+  .header__toggle-rules {
+    display: grid;
+    gap: 4px;
+    width: 1.25rem;
+  }
+
+  .header__toggle-rules span {
+    display: block;
+    height: 1px;
+    background: currentColor;
+    transition: transform 0.45s var(--ease);
+  }
+
+  .header[data-open] .header__toggle-rules span:first-child {
+    transform: translateY(2.5px) rotate(45deg);
+  }
+
+  .header[data-open] .header__toggle-rules span:last-child {
+    transform: translateY(-2.5px) rotate(-45deg);
+  }
+
+  /* --------------------------------------------------------------- menu */
+
+  .menu {
+    position: fixed;
+    inset: var(--header-h) 0 0;
+    background: var(--ink);
+    border-top: 1px solid var(--rule);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    overflow-y: auto;
+    padding-bottom: env(safe-area-inset-bottom, 0);
+  }
+
+  .menu[hidden] {
+    display: none;
+  }
+
+  .menu__row {
+    border-bottom: 1px solid var(--rule);
+  }
+
+  .menu__link {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 1.35rem var(--gutter);
+    font-size: clamp(1.5rem, 7vw, 2rem);
+    font-weight: 580;
+    font-stretch: 90%;
+    letter-spacing: -0.02em;
+  }
+
+  .menu__arrow {
+    color: var(--signal);
+    font-size: 1rem;
+  }
+
+  .menu__foot {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    padding: clamp(1.75rem, 6vw, 2.5rem) var(--gutter);
+  }
+
+  .menu__cta {
+    justify-content: center;
+  }
+
+  .menu__email {
+    color: var(--bone-dim);
+    word-break: break-all;
+  }
+
+  /* ------------------------------------------------------------ desktop */
+
+  @media (min-width: 56rem) {
+    .header__nav,
+    .header__cta {
+      display: flex;
+    }
+
+    .header__toggle {
+      display: none;
+    }
+
+    .menu {
+      display: none !important;
+    }
+  }
+</style>
+
+<script>
+  const header = document.querySelector<HTMLElement>('[data-header]');
+  const toggle = document.querySelector<HTMLButtonElement>('[data-menu-toggle]');
+  const menu = document.querySelector<HTMLElement>('[data-menu]');
+  const label = document.querySelector<HTMLElement>('[data-menu-label]');
+
+  if (header && toggle && menu && label) {
+    const setOpen = (open: boolean) => {
+      menu.hidden = !open;
+      toggle.setAttribute('aria-expanded', String(open));
+      label.textContent = open ? 'Close' : 'Menu';
+      header.toggleAttribute('data-open', open);
+      document.body.style.overflow = open ? 'hidden' : '';
+    };
+
+    toggle.addEventListener('click', () => setOpen(menu.hidden));
+
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape' && !menu.hidden) {
+        setOpen(false);
+        toggle.focus();
+      }
+    });
+
+    // A resize past the desktop breakpoint must not leave the body locked.
+    const desktop = window.matchMedia('(min-width: 56rem)');
+    desktop.addEventListener('change', (event) => {
+      if (event.matches && !menu.hidden) setOpen(false);
+    });
+  }
+</script>

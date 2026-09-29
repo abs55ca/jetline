@@ -1,0 +1,125 @@
+---
+import { Image } from 'astro:assets';
+import Layout from '../layouts/Layout.astro';
+import PageHero from '../components/PageHero.astro';
+import CtaBand from '../components/CtaBand.astro';
+
+import movementChevrons from '../assets/photos/movement-chevrons.jpg';
+import torontoSkyline from '../assets/photos/toronto-skyline.jpg';
+
+const detail = [
+  {
+    name: 'Arrivals',
+    line: 'We watch the flight rather than the booking. If you land forty minutes late, the pickup is forty minutes later, and nobody has to call anyone.',
+  },
+  {
+    name: 'Departures',
+    line: 'Pickup times set from the departure and the hour of day, not from a generic rule of thumb.',
+  },
+  {
+    name: 'Luggage',
+    line: 'Vehicle matched to what you are actually carrying. Two people with four cases go in an SUV, not a sedan.',
+  },
+  {
+    name: 'Groups and crews',
+    line: 'A whole party moved together in a van instead of split across several cars.',
+  },
+  {
+    name: 'Late and early',
+    line: 'The first departures and the last arrivals are ordinary work here, not an exception you pay a premium for.',
+  },
+];
+---
+
+<Layout
+  title="Airport Transfers, Greater Toronto Area | Jetline Executive Ground Transportation"
+  description="Executive airport transfers across the Greater Toronto Area. Flights monitored, pickups adjusted for delays, vehicles matched to luggage. Dispatch 24/7/365."
+>
+  <PageHero
+    headline="Arrivals that<br />account for delays."
+    lede="Executive airport transfers across the Greater Toronto Area, at whatever hour the flight lands."
+    image={movementChevrons}
+    alt="A dark sedan crossing wet asphalt painted with lane chevrons, seen from above at night."
+    focus="38% 50%"
+    fields={['Greater Toronto Area', 'Flights monitored', 'Dispatch 24/7/365']}
+    live={2}
+  />
+
+  <section class="strip shell">
+    <div class="lead">
+      <h2 class="headline" data-reveal>The flight is the schedule.</h2>
+      <div class="prose lead__copy" data-reveal style="--delay: 0.1s">
+        <p>
+          Most airport transport is booked against the time you hoped to land. We book it
+          against the time you actually will. Flights are monitored and the pickup moves with
+          them, which removes the two worst outcomes: a vehicle billing while it waits, and a
+          traveller standing at the kerb with no car.
+        </p>
+      </div>
+    </div>
+
+    <ul class="ledger lead__ledger">
+      {
+        detail.map((item) => (
+          <li class="ledger__row">
+            <div class="ledger__item">
+              <h3 class="ledger__name subhead">{item.name}</h3>
+              <p class="ledger__line">{item.line}</p>
+            </div>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+
+  <section class="strip">
+    <div class="field field--wide" data-reveal-media>
+      <Image
+        src={torontoSkyline}
+        alt="The Toronto skyline at blue hour seen across the lake, CN Tower centred."
+        widths={[640, 960, 1440, 1920, 2400]}
+        sizes="100vw"
+        loading="lazy"
+        style="object-position: 50% 34%"
+      />
+      <div class="field__scrim"></div>
+      <div class="field__caption">
+        <div class="shell">
+          <p class="quiet" data-reveal>
+            Downtown, the airports, the campuses and the hotels &mdash; the whole GTA, at every
+            hour of it.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <CtaBand
+    headline="Give us the<br />flight number."
+    lede="One transfer or a standing arrangement."
+  />
+</Layout>
+
+<style>
+  .lead {
+    max-width: 46rem;
+  }
+
+  .lead__copy {
+    margin-top: 1.5rem;
+  }
+
+  .lead__ledger {
+    margin-top: clamp(3rem, 7vw, 4.5rem);
+  }
+
+  .quiet {
+    font-size: var(--step-2);
+    font-weight: 520;
+    font-stretch: 92%;
+    line-height: 1.25;
+    letter-spacing: -0.015em;
+    max-width: 30ch;
+    text-wrap: balance;
+  }
+</style>

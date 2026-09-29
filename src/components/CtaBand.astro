@@ -1,0 +1,64 @@
+---
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+import { site } from '../data/site';
+import rainCrosswalk from '../assets/photos/rain-crosswalk.jpg';
+
+interface Props {
+  headline?: string;
+  lede?: string;
+  /** Override the closing frame so neighbouring surfaces don't repeat one plate. */
+  image?: ImageMetadata;
+  alt?: string;
+}
+
+const {
+  headline = 'Tell us when<br />the flight lands.',
+  lede = 'We&rsquo;ll take it from there.',
+  image = rainCrosswalk,
+  alt = 'Rain falling on a night crosswalk, headlights smeared across the wet road.',
+} = Astro.props;
+---
+
+<section class="strip call">
+  <div class="field field--full" data-reveal-media>
+    <Image
+      src={image}
+      alt={alt}
+      widths={[640, 960, 1440, 2000]}
+      sizes="100vw"
+      loading="lazy"
+    />
+    <div class="field__scrim"></div>
+    <div class="field__caption">
+      <div class="shell call__body">
+        <h2 class="display" data-reveal set:html={headline} />
+        <p class="lede call__lede" data-reveal style="--delay: 0.1s" set:html={lede} />
+        <div class="call__actions" data-reveal style="--delay: 0.18s">
+          <a class="action action--primary" href="/request/">
+            Request service
+            <span class="action__arrow" aria-hidden="true">&rarr;</span>
+          </a>
+          <a class="action" href={`mailto:${site.email}`}>Email dispatch</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .call__body {
+    padding-bottom: clamp(0.5rem, 2vw, 1.5rem);
+  }
+
+  .call__lede {
+    margin-top: 1.25rem;
+  }
+
+  .call__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-top: 2rem;
+  }
+</style>

@@ -1,0 +1,366 @@
+---
+import Layout from '../layouts/Layout.astro';
+import PageHero from '../components/PageHero.astro';
+import { site } from '../data/site';
+
+import nightRoad from '../assets/photos/night-road.jpg';
+
+const serviceTypes = [
+  'Airline crew transportation',
+  'Private aviation / FBO',
+  'Airport transfer',
+  'Corporate or executive travel',
+  'Employee shuttle programme',
+  'Event or group transport',
+  'Something else',
+];
+---
+
+<Layout
+  title="Request Service | Jetline Executive Ground Transportation, Toronto"
+  description="Request executive ground transportation from Jetline. Airline crew, airport transfers and corporate accounts across the Greater Toronto Area. Dispatch answers 24/7/365."
+>
+  <PageHero
+    headline="Request<br />service."
+    lede="Tell us what needs to move and when. Dispatch answers at every hour of the year."
+    image={nightRoad}
+    alt="An empty road at night running away under sodium streetlights, its painted centreline lit."
+    focus="50% 58%"
+    fields={['Greater Toronto Area', 'Dispatch 24/7/365', 'Quoted by a person']}
+    live={1}
+  />
+
+  <section class="strip shell">
+    <div class="request">
+      <div class="request__aside">
+        <h2 class="subhead" data-reveal>Straight to dispatch</h2>
+        <p class="request__note" data-reveal style="--delay: 0.08s">
+          Every request is read and quoted by a person. There is no automated booking engine
+          here, which is deliberate &mdash; crew rotations and standing accounts are not things
+          a form can price on its own.
+        </p>
+
+        <dl class="request__facts">
+          <div class="request__fact">
+            <dt class="rail-text">Email</dt>
+            <dd><a href={`mailto:${site.email}`}>{site.email}</a></dd>
+          </div>
+          <div class="request__fact">
+            <dt class="rail-text">Service area</dt>
+            <dd>{site.areaServed}</dd>
+          </div>
+          <div class="request__fact">
+            <dt class="rail-text">Dispatch</dt>
+            <dd>{site.hours}</dd>
+          </div>
+        </dl>
+      </div>
+
+      <!--
+        No backend is deployed for this site, so the form composes a message in the
+        sender's own mail client and addresses it to dispatch. The action attribute
+        is the no-JS fallback. To move to a hosted handler later, point `action` at
+        the endpoint, set method="post", and delete the submit listener below.
+      -->
+      <form
+        class="form"
+        data-request-form
+        action={`mailto:${site.formInbox}`}
+        method="post"
+        enctype="text/plain"
+      >
+        <div class="form__grid">
+          <p class="field-row">
+            <label class="field-row__label" for="name">Name</label>
+            <input class="field-row__input" id="name" name="name" type="text" required autocomplete="name" />
+          </p>
+
+          <p class="field-row">
+            <label class="field-row__label" for="company">Company</label>
+            <input
+              class="field-row__input"
+              id="company"
+              name="company"
+              type="text"
+              autocomplete="organization"
+            />
+          </p>
+
+          <p class="field-row">
+            <label class="field-row__label" for="email">Email</label>
+            <input class="field-row__input" id="email" name="email" type="email" required autocomplete="email" />
+          </p>
+
+          <p class="field-row">
+            <label class="field-row__label" for="phone">Phone</label>
+            <input class="field-row__input" id="phone" name="phone" type="tel" autocomplete="tel" />
+          </p>
+
+          <p class="field-row field-row--wide field-row--select">
+            <label class="field-row__label" for="service">What do you need?</label>
+            <select class="field-row__input" id="service" name="service" required>
+              <option value="" selected disabled>Select a service</option>
+              {serviceTypes.map((type) => <option value={type}>{type}</option>)}
+            </select>
+          </p>
+
+          <p class="field-row field-row--wide">
+            <label class="field-row__label" for="when">When</label>
+            <input
+              class="field-row__input"
+              id="when"
+              name="when"
+              type="text"
+              placeholder="Dates, times, or an ongoing pattern"
+            />
+          </p>
+
+          <p class="field-row field-row--wide">
+            <label class="field-row__label" for="details">Details</label>
+            <textarea
+              class="field-row__input field-row__input--area"
+              id="details"
+              name="details"
+              rows="5"
+              required
+              placeholder="Passengers, luggage, pickup and destination, flight numbers if you have them."></textarea>
+          </p>
+        </div>
+
+        <div class="form__foot">
+          <button class="action action--primary" type="submit">
+            Send request
+            <span class="action__arrow" aria-hidden="true">&rarr;</span>
+          </button>
+          <p class="form__status" data-form-status role="status" aria-live="polite"></p>
+        </div>
+      </form>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .request {
+    display: grid;
+    gap: clamp(2.5rem, 6vw, 4.5rem);
+  }
+
+  .request__aside {
+    align-self: start;
+  }
+
+  .request__note {
+    margin-top: 1.25rem;
+    color: var(--bone-dim);
+    font-size: var(--step--1);
+    line-height: 1.6;
+    max-width: 38ch;
+    text-wrap: pretty;
+  }
+
+  .request__facts {
+    margin: clamp(2rem, 5vw, 3rem) 0 0;
+    border-top: 1px solid var(--rule);
+  }
+
+  .request__fact {
+    display: grid;
+    gap: 0.45rem;
+    padding-block: 1.1rem;
+    border-bottom: 1px solid var(--rule);
+  }
+
+  .request__fact dt {
+    color: var(--bone-faint);
+  }
+
+  .request__fact dd {
+    margin: 0;
+    font-size: var(--step--1);
+    color: var(--bone);
+    word-break: break-word;
+  }
+
+  .request__fact a {
+    display: inline-block;
+    padding-block: 0.3rem;
+    transition: color 0.4s var(--ease);
+  }
+
+  .request__fact a:hover {
+    color: var(--signal);
+  }
+
+  /* ---------------------------------------------------------------- form
+
+     Fields are ruled lines, not boxes. A dispatch release is a sheet with
+     entries written onto it, and a rounded input would be the one component in
+     the system wearing a different costume.                                  */
+
+  .form__grid {
+    display: grid;
+    gap: 0;
+    border-top: 1px solid var(--rule);
+  }
+
+  .field-row {
+    display: grid;
+    gap: 0.4rem;
+    padding-block: 1rem;
+    border-bottom: 1px solid var(--rule);
+    margin: 0;
+  }
+
+  .field-row__label {
+    font-family: var(--font-rail);
+    font-size: var(--step--2);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--bone-faint);
+  }
+
+  .field-row__input {
+    width: 100%;
+    background: transparent;
+    border: 0;
+    padding: 0.35rem 0;
+    color: var(--bone);
+    font-family: var(--font-display);
+    font-size: var(--step-0);
+    line-height: 1.5;
+    border-radius: 0;
+    appearance: none;
+  }
+
+  .field-row__input::placeholder {
+    color: var(--bone-faint);
+  }
+
+  .field-row__input:focus {
+    outline: none;
+  }
+
+  .field-row:focus-within {
+    border-bottom-color: var(--signal);
+  }
+
+  .field-row:focus-within .field-row__label {
+    color: var(--signal);
+  }
+
+  .field-row__input--area {
+    resize: vertical;
+    min-height: 7rem;
+  }
+
+  /* An appearance:none select loses its caret, and a ruled field gives no other
+     hint that it opens. The chevron is drawn rather than set as a glyph. */
+  .field-row--select {
+    position: relative;
+  }
+
+  .field-row--select .field-row__input {
+    padding-right: 2rem;
+    cursor: pointer;
+  }
+
+  .field-row--select::after {
+    content: '';
+    position: absolute;
+    right: 0.35rem;
+    bottom: 1.15rem;
+    width: 0.5rem;
+    height: 0.5rem;
+    border-right: 1px solid var(--bone-dim);
+    border-bottom: 1px solid var(--bone-dim);
+    transform: rotate(45deg);
+    pointer-events: none;
+  }
+
+  .field-row--select:focus-within::after {
+    border-color: var(--signal);
+  }
+
+  /* The native select popup is drawn by the OS, so its options need a ground of
+     their own or they inherit white-on-white on some platforms. */
+  .field-row__input option {
+    background: var(--ink-raised);
+    color: var(--bone);
+  }
+
+  .field-row__input:user-invalid {
+    border-bottom: 0;
+  }
+
+  .field-row:has(:user-invalid) {
+    border-bottom-color: var(--signal);
+  }
+
+  .form__foot {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 1rem 1.5rem;
+    margin-top: clamp(1.75rem, 4vw, 2.5rem);
+  }
+
+  .form__status {
+    font-size: var(--step--1);
+    color: var(--bone-dim);
+    max-width: 34ch;
+  }
+
+  @media (min-width: 44rem) {
+    .form__grid {
+      grid-template-columns: 1fr 1fr;
+      column-gap: clamp(1.5rem, 4vw, 3rem);
+    }
+
+    .field-row--wide {
+      grid-column: 1 / -1;
+    }
+  }
+
+  @media (min-width: 64rem) {
+    .request {
+      grid-template-columns: 4fr 7fr;
+      gap: clamp(3rem, 7vw, 6rem);
+    }
+  }
+</style>
+
+<script>
+  import { site } from '../data/site';
+
+  const form = document.querySelector<HTMLFormElement>('[data-request-form]');
+  const status = document.querySelector<HTMLParagraphElement>('[data-form-status]');
+
+  form?.addEventListener('submit', (event) => {
+    if (!form.reportValidity()) return;
+    event.preventDefault();
+
+    const data = new FormData(form);
+    const value = (key: string) => String(data.get(key) ?? '').trim();
+
+    const lines = [
+      `Name: ${value('name')}`,
+      value('company') && `Company: ${value('company')}`,
+      `Email: ${value('email')}`,
+      value('phone') && `Phone: ${value('phone')}`,
+      `Service: ${value('service')}`,
+      value('when') && `When: ${value('when')}`,
+      '',
+      'Details:',
+      value('details'),
+    ].filter(Boolean);
+
+    const subject = `Service request — ${value('service')} — ${value('name')}`;
+    const href = `mailto:${site.formInbox}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(lines.join('\n'))}`;
+
+    window.location.href = href;
+
+    if (status) {
+      status.textContent = `Opening your email app with these details. If nothing happens, email ${site.email} directly.`;
+    }
+  });
+</script>

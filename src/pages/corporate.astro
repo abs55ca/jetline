@@ -1,0 +1,146 @@
+---
+import { Image } from 'astro:assets';
+import Layout from '../layouts/Layout.astro';
+import PageHero from '../components/PageHero.astro';
+import CtaBand from '../components/CtaBand.astro';
+
+import torontoFinancial from '../assets/photos/toronto-financial.jpg';
+import executiveSedan from '../assets/photos/executive-sedan.jpg';
+import sedanHotel from '../assets/photos/sedan-hotel.jpg';
+
+const programmes = [
+  {
+    name: 'Executive travel',
+    line: 'Point-to-point for people whose day is already full. Roadshows, board meetings, client dinners, airport runs.',
+  },
+  {
+    name: 'Standing accounts',
+    line: 'One named contact, consistent vehicles, and a booking process that stops being a task after the first month.',
+  },
+  {
+    name: 'Employee shuttles',
+    line: 'Scheduled programmes between campuses, terminals and transit, running to a timetable you set.',
+  },
+  {
+    name: 'Events and groups',
+    line: 'Multi-vehicle movements for conferences and company events, coordinated as one operation.',
+  },
+  {
+    name: 'Dedicated contracts',
+    line: 'Long-term arrangements with vehicles and drivers assigned to your account.',
+  },
+];
+---
+
+<Layout
+  title="Corporate &amp; Executive Ground Transportation | Jetline, Toronto"
+  description="Corporate accounts, executive travel, employee shuttle programmes and dedicated contracts across the Greater Toronto Area. 25+ years, dispatch 24/7/365."
+>
+  <PageHero
+    headline="Corporate travel,<br />without the follow-up."
+    lede="Standing accounts, executive travel and shuttle programmes across the Greater Toronto Area."
+    image={torontoFinancial}
+    alt="Toronto's financial district at night, office towers compressed above a single figure crossing the street."
+    focus="50% 45%"
+    fields={['Corporate accounts', 'Employee shuttles', 'Dedicated contracts', '25+ years']}
+    live={3}
+  />
+
+  <section class="strip shell">
+    <div class="split split--flip">
+      <div class="field field--tall" data-reveal-media>
+        <Image
+          src={executiveSedan}
+          alt="An executive stepping into a black sedan held open outside a modern office building."
+          widths={[420, 640, 900, 1200]}
+          sizes="(min-width: 60rem) 42vw, 100vw"
+          loading="lazy"
+          style="object-position: 50% 40%"
+        />
+      </div>
+      <div class="intro">
+        <h2 class="headline" data-reveal>The point is that<br />you stop checking.</h2>
+        <div class="prose intro__copy" data-reveal>
+          <p>
+            An executive assistant should not have to confirm a car twice. A standing account
+            means the vehicle, the driver standard and the route are already settled, and the
+            only thing left to send us is a time.
+          </p>
+          <p>
+            The same discipline that keeps a flight crew on schedule at 04:30 is what keeps a
+            board meeting from starting late.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="strip shell" aria-labelledby="programmes-heading">
+    <h2 class="headline programmes__heading" id="programmes-heading" data-reveal>
+      Ways we work with companies.
+    </h2>
+    <ul class="ledger">
+      {
+        programmes.map((item) => (
+          <li class="ledger__row">
+            <div class="ledger__item">
+              <h3 class="ledger__name subhead">{item.name}</h3>
+              <p class="ledger__line">{item.line}</p>
+            </div>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+
+  <section class="strip">
+    <div class="field field--wide" data-reveal-media>
+      <Image
+        src={sedanHotel}
+        alt="A chauffeur holding an umbrella as a passenger steps to a black sedan at a hotel entrance."
+        widths={[640, 960, 1280, 2000]}
+        sizes="100vw"
+        loading="lazy"
+        style="object-position: 30% 60%"
+      />
+      <div class="field__scrim"></div>
+      <div class="field__caption">
+        <div class="shell">
+          <p class="quiet" data-reveal>
+            Discretion is part of the service, not an extra.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <CtaBand
+    headline="Open an<br />account."
+    lede="Tell us the pattern of travel and we&rsquo;ll propose the programme."
+  />
+</Layout>
+
+<style>
+  .intro {
+    padding-bottom: clamp(0.5rem, 2vw, 2rem);
+  }
+
+  .intro__copy {
+    margin-top: 1.5rem;
+  }
+
+  .programmes__heading {
+    max-width: 20ch;
+    margin-bottom: clamp(2rem, 5vw, 3rem);
+  }
+
+  .quiet {
+    font-size: var(--step-2);
+    font-weight: 520;
+    font-stretch: 92%;
+    line-height: 1.25;
+    letter-spacing: -0.015em;
+    max-width: 24ch;
+    text-wrap: balance;
+  }
+</style>

@@ -1,0 +1,200 @@
+---
+import { Image } from 'astro:assets';
+import Layout from '../layouts/Layout.astro';
+import PageHero from '../components/PageHero.astro';
+import CtaBand from '../components/CtaBand.astro';
+import { proof } from '../data/site';
+
+import doorHandle from '../assets/photos/door-handle-rain.jpg';
+import interiorDetail from '../assets/photos/interior-detail.jpg';
+
+const principles = [
+  {
+    name: 'On time means early',
+    line: 'A vehicle that arrives exactly on the minute has no margin. Ours arrive before they are needed.',
+  },
+  {
+    name: 'One accountable contact',
+    line: 'You should never have to explain your requirement twice, or find out who is handling it.',
+  },
+  {
+    name: 'Discretion by default',
+    line: 'Who travelled, where they went, and what was discussed in the vehicle stays where it happened.',
+  },
+  {
+    name: 'The hours nobody wants',
+    line: 'First departures and last arrivals are the core of this work, not an exception to it.',
+  },
+];
+---
+
+<Layout
+  title="About Jetline | 25+ Years in Executive Ground Transportation, Toronto"
+  description="Jetline Executive Ground Transportation: 25+ years moving executives and airline crews across the Greater Toronto Area, including six years supporting crew operations at Billy Bishop."
+>
+  <PageHero
+    headline="Twenty-five years<br />of arrivals."
+    lede="Jetline Executive Ground Transportation moves airline crews, executives and corporate accounts across the Greater Toronto Area."
+    image={doorHandle}
+    alt="A hand resting on the door handle of a rain-beaded black sedan."
+    focus="50% 28%"
+    fields={['Greater Toronto Area', '25+ years', '6+ years airline crew', 'Dispatch 24/7/365']}
+    live={3}
+  />
+
+  <section class="strip shell">
+    <div class="lead">
+      <h2 class="headline" data-reveal>We are a ground<br />operation, not a car service.</h2>
+      <div class="prose lead__copy" data-reveal style="--delay: 0.1s">
+        <p>
+          Jetline has spent more than twenty-five years in executive ground transportation
+          around Toronto. Six of those years have gone specifically into airline crew
+          operations, much of it at <strong>Billy Bishop Toronto City Airport</strong>, which is
+          where the habits that define the business were formed.
+        </p>
+        <p>
+          Crew work is unforgiving in a useful way. Flights move, and a provider either absorbs
+          that or becomes another thing the client has to manage. Everything we do for corporate
+          accounts and executive travellers is built on the same footing: know the schedule,
+          watch it change, and be there before anyone has to ask.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="strip experience" aria-labelledby="record-heading">
+    <div class="field field--wide experience__field" data-reveal-media>
+      <Image
+        src={interiorDetail}
+        alt="The black leather rear headrest of an executive vehicle, lit low and shot close."
+        widths={[640, 960, 1440, 1600]}
+        sizes="100vw"
+        loading="lazy"
+        style="object-position: 50% 35%"
+      />
+      <div class="experience__scrim"></div>
+    </div>
+    <div class="experience__overlay shell">
+      <h2 class="visually-hidden" id="record-heading">Record</h2>
+      <dl class="record" data-reveal>
+        {
+          proof.map((item) => (
+            <div class="record__entry">
+              <dt class="record__figure">{item.figure}</dt>
+              <dd class="record__label rail-text">{item.label}</dd>
+            </div>
+          ))
+        }
+      </dl>
+    </div>
+  </section>
+
+  <section class="strip shell" aria-labelledby="principles-heading">
+    <h2 class="headline principles__heading" id="principles-heading" data-reveal>
+      How we operate.
+    </h2>
+    <ul class="ledger">
+      {
+        principles.map((item) => (
+          <li class="ledger__row">
+            <div class="ledger__item">
+              <h3 class="ledger__name subhead">{item.name}</h3>
+              <p class="ledger__line">{item.line}</p>
+            </div>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+
+  <CtaBand />
+</Layout>
+
+<style>
+  .visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+
+  .lead {
+    max-width: 46rem;
+  }
+
+  .lead__copy {
+    margin-top: 1.5rem;
+  }
+
+  .principles__heading {
+    max-width: 20ch;
+    margin-bottom: clamp(2rem, 5vw, 3rem);
+  }
+
+  .experience {
+    position: relative;
+    isolation: isolate;
+  }
+
+  .experience__field {
+    height: clamp(26rem, 66vh, 40rem);
+  }
+
+  .experience__scrim {
+    position: absolute;
+    inset: 0;
+    background: rgba(6, 7, 8, 0.62);
+  }
+
+  .experience__overlay {
+    position: absolute;
+    inset-inline: 0;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+
+  .record {
+    margin: 0;
+  }
+
+  .record__entry {
+    display: flex;
+    align-items: baseline;
+    gap: clamp(0.75rem, 2.5vw, 1.75rem);
+    padding-block: clamp(0.35rem, 1vw, 0.6rem);
+  }
+
+  .record__entry:nth-child(2) {
+    margin-left: clamp(1.25rem, 6vw, 5.5rem);
+  }
+
+  .record__entry:nth-child(3) {
+    margin-left: clamp(2.5rem, 12vw, 11rem);
+  }
+
+  .record__figure {
+    font-size: clamp(3rem, 9vw, 6.5rem);
+    font-weight: 660;
+    font-stretch: 80%;
+    line-height: 0.86;
+    letter-spacing: -0.045em;
+    flex: none;
+  }
+
+  .record__label {
+    margin: 0;
+    color: var(--bone-dim);
+    min-width: 0;
+    max-width: 30ch;
+    line-height: 1.5;
+    letter-spacing: 0.11em;
+  }
+
+  @media (max-width: 30rem) {
+    .record__label {
+      max-width: 16ch;
+    }
+  }
+</style>
